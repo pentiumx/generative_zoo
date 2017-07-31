@@ -8,7 +8,7 @@ import data_utilities as d_u
 dset	= sys.argv[1]
 root	= sys.argv[2]
 
-# Arguments passed to dataset loaders can be modified based on required usage. Please look at the documentation of the loader functions using 
+# Arguments passed to dataset loaders can be modified based on required usage. Please look at the documentation of the loader functions using
 # help(d_u) command.
 
 if dset == 'mnist':
@@ -18,16 +18,16 @@ elif dset == 'cifar10':
 	dataset	= d_u.CIFAR10_loader(root=root, image_size=32, normalize=True)
 	n_chan	= 3
 elif dset == 'lsun':
-	dataset	= d_u.LSUN_loader(root=root, image_size=32, classes=['bedroom'], normalize=True)
+	dataset	= d_u.LSUN_loader(root=root, image_size=64, classes=['bedroom_train'], normalize=True)
 	n_chan	= 3
-	
+
 # DCGAN object initialization
 # Parameters below can be modified
 # Please check the documentation using help(dc.DCGAN.__init__)
-image_size	= 32
-n_z		= 128
-hiddens		= {'gen':	64,
-		   'dis':	64
+image_size	= 64
+n_z		= 100#128
+hiddens		= {'gen':	128,
+		   'dis':	128
 		  }
 ngpu		= 1
 loss		= 'BCE'
@@ -38,21 +38,20 @@ Gen_model	= dc.DCGAN(image_size=image_size, n_z=n_z, n_chan=n_chan, hiddens=hidd
 # Parameters below can be modified based on required usage.
 # Please check the documentation using help(dc.DCGAN.train) for more details
 
-batch_size	= 100
-n_iters		= 1e05
+batch_size	= 128
+n_iters		= 7031250#1e05
 opt_dets	= {'gen':	{'name'		: 'adam',
-				 'learn_rate'	: 1e-04,
+				 'learn_rate'	: 0.0002, #1e-04
 				 'betas'	: (0.5, 0.99)
 				},
-		   'dis':	{'name'		: 'sgd',
-		   		 'learn_rate'	: 1e-04,
-		   		 'momentum'	: 0.9,
-		   		 'nesterov'	: True
+		   'dis':	{'name'		: 'adam',
+		   		 'learn_rate'	: 0.0002,
+		   		 'betas'	: (0.5, 0.99)'
 		   		}
 		  }
 
 # Optional arguments
-show_period	= 50
+show_period	= 1000  # dump generated images and models per 1,000 iters = 1,000 minibatches
 display_images	= True
 misc_options	= ['init_scheme', 'save_model']
 
