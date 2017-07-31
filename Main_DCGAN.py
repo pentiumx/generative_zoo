@@ -46,7 +46,7 @@ opt_dets	= {'gen':	{'name'		: 'adam',
 				},
 		   'dis':	{'name'		: 'adam',
 		   		 'learn_rate'	: 0.0002,
-		   		 'betas'	: (0.5, 0.99)'
+		   		 'betas'	: (0.5, 0.99)
 		   		}
 		  }
 
