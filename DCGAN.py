@@ -168,18 +168,21 @@ class DCGAN(object):
 				if gen_iters % show_period == 0:
 					print('[{0}/{1}]\tDiscriminator Error:\t{2}\tGenerator Error:\t{3}'.format(gen_iters, n_iters, err_D.data[0], err_G.data[0]))
 
-				# Saving the generated images every show_period*5 iterations
+				# Saving the generated images every show_period iterations
 				if display_images == True:
-					if gen_iters % (show_period*5) == 0:
+					if gen_iters % (show_period) == 0:
+						print('dumping gen imgs')
 						gen_imgs	= self.Gen_net(V(fixed_noise))
 
 						# Normalizing the images to look better
-						gen_imgs.data	= gen_imgs.data.mul(0.5).add(0.5)
+						gen_imgs_alt	= gen_imgs.data.mul(0.5).add(0.5)
 						tv_utils.save_image(gen_imgs.data, 'Generated_images@iteration={0}.png'.format(gen_iters))
+						tv_utils.save_image(gen_imgs_alt, 'Generated_images alt@iteration={0}.png'.format(gen_iters))
 
-						if 'save_model' in misc_options and flag == True:
-							torch.save(self.Gen_net.state_dict(), 'DCGAN_Gen_net_trained_model_%d.pth'%gen_iters)
-							torch.save(self.Dis_net.state_dict(), 'DCGAN_Dis_net_trained_model_%d.pth'%gen_iters)
+						if 'save_model' in misc_options:
+							print('saving models')
+							t.save(self.Gen_net.state_dict(), 'DCGAN_Gen_net_trained_model_%d.pth'%gen_iters)
+							t.save(self.Dis_net.state_dict(), 'DCGAN_Dis_net_trained_model_%d.pth'%gen_iters)
 
 				if gen_iters == n_iters:
 					flag	= True
