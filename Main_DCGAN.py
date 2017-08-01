@@ -20,6 +20,9 @@ elif dset == 'cifar10':
 elif dset == 'lsun':
 	dataset	= d_u.LSUN_loader(root=root, image_size=64, classes=['bedroom_train'], normalize=True)
 	n_chan	= 3
+elif dset == 'cub':
+	dataset	= d_u.CUB2011_loader(root=root, image_size=64, normalize=True)
+	n_chan	= 3
 
 # DCGAN object initialization
 # Parameters below can be modified
